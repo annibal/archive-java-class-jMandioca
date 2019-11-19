@@ -1,3 +1,4 @@
+package mandioquito;
 import java.util.HashMap;
 
 public class ProductManager {

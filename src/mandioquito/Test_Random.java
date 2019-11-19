@@ -1,3 +1,4 @@
+package mandioquito;
 import java.util.Random;
 
 public class Test_Random {

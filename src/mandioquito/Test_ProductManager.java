@@ -1,3 +1,4 @@
+package mandioquito;
 
 public class Test_ProductManager {
 	public Test_ProductManager() {

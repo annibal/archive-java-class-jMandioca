@@ -1,3 +1,4 @@
+package mandioquito;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,7 +9,7 @@ import java.io.OutputStream;
 import java.util.Stack;
 
 public class ProductStorage {
-	static final String filePath = "thing.csv";
+	static final String filePath = "data/thing.csv";
 
 	public static Product[] load() throws IOException {
 		System.out.println("Test File");

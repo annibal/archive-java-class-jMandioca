@@ -1,3 +1,4 @@
+package mandioquito;
 
 public class Test_ProductParser {
 	public Test_ProductParser() {

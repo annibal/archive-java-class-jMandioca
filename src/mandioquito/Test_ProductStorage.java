@@ -1,3 +1,4 @@
+package mandioquito;
 import java.io.IOException;
 
 public class Test_ProductStorage {

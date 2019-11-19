@@ -1,3 +1,4 @@
+package mandioquito;
 import java.util.Scanner;
 
 public class TerminalInterface {

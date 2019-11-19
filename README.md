@@ -1,2 +1,0 @@
-# jMandioca
-jFrame studies

@@ -1,3 +1,4 @@
+package mandioquito;
 
 public class ProductParser {
 	

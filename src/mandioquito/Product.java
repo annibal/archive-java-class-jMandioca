@@ -1,3 +1,5 @@
+package mandioquito;
+
 import java.util.Random;
 
 public class Product {
