@@ -4,6 +4,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 public class GuiTableProduct extends JPanel {
 	
@@ -31,7 +34,19 @@ public class GuiTableProduct extends JPanel {
 			dados[i][2] = this.products[i].getQtd()+"";
 		}
 		
-		JTable tabela = new JTable(dados, colunas);
+		JTable tabela = new JTable();
+		tabela.setCellEditor(null);
+		tabela.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	guiListener.action( products[tabela.getSelectedRow()] );
+	        }
+	    });
+		tabela.setModel(new DefaultTableModel(dados, colunas) {
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		});
+	
 		JScrollPane scrollPane = new JScrollPane(tabela);
 		this.add(scrollPane);
 	}

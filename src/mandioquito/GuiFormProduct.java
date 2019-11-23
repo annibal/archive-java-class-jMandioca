@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import com.sun.javafx.binding.StringConstant;
+
 public class GuiFormProduct extends JPanel {
 	private JTextField nameField = new JTextField();
 	private JTextField valueField = new JTextField();
@@ -17,6 +19,7 @@ public class GuiFormProduct extends JPanel {
 	private JButton saveButton = new JButton("Salvar");
 	private JLabel titleLabel = new JLabel("");
 	private GuiListener guiListener;
+	private String productId = "";
 	
 	public GuiFormProduct() {
 		super();
@@ -64,17 +67,22 @@ public class GuiFormProduct extends JPanel {
 		this.add(p);
 	}
 	
+	public boolean isEditing() {
+		return !this.productId.isEmpty();
+	}
 	public void setProduct(Product product) {
 		this.nameField.setText(product.getName());
 		this.valueField.setText(product.getValue()+"");
 		this.qtdField.setText(product.getQtd()+"");
 		this.titleLabel.setText("Editando produto "+product.getName());
+		this.productId = product.getId();
 	}
 	public void clear() {
 		this.nameField.setText("");
 		this.valueField.setText("");
 		this.qtdField.setText("");
 		this.titleLabel.setText("Novo produto");
+		this.productId = "";
 	}
 	public void onSave(GuiListener guiListener) {
 		this.guiListener = guiListener;
@@ -82,7 +90,7 @@ public class GuiFormProduct extends JPanel {
 	public void save() {
 		try {
 			this.guiListener.action(this.getProduct());	
-			this.clear();		
+			this.clear();
 		} catch(ProductPropertyParseError e) {
 			this.titleLabel.setText( e.getMessage() );
 		}
@@ -107,7 +115,11 @@ public class GuiFormProduct extends JPanel {
 			throw new ProductPropertyParseError("Quantidade deve ser um número válido");
 		}
 		
-		return new Product(name, value, qtd);
+		if (this.isEditing()) {
+			return new Product(name, value, qtd, this.productId);
+		} else {
+			return new Product(name, value, qtd);
+		}
 	}
 	
 }

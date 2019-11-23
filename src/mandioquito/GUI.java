@@ -19,8 +19,12 @@ public class GUI {
 
 		productForm.onSave(new GuiListener<Product>() {
 			public void action(Product product) {
-				System.out.println("Saved product "+product.getName()+" with "+product.getQtd()+" items of value "+product.getValue());
-				productManager.add(product);
+				
+				if (productForm.isEditing()) {
+					productManager.update(product, product);
+				} else {
+					productManager.add(product);
+				}
 				productTable.setProducts(productManager.getProducts());
 			}
 		});
@@ -35,7 +39,7 @@ public class GUI {
 		productTable.setProducts(productManager.getProducts());
 		
 		frame.pack();
-        frame.setSize(800, 480);
+//        frame.setSize(600, 480);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);

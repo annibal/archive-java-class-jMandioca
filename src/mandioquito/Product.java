@@ -14,6 +14,12 @@ public class Product extends Object {
 		return Math.abs(random.nextInt())+"-"+Math.abs(random.nextInt());
 	}
 
+	public Product(String name, float value, float qtd, String id) {
+		this.name = name;
+		this.value = value;
+		this.qtd = qtd;
+		this.id = id;
+	}
 	public Product(String name, float value, float qtd) {
 		this.name = name;
 		this.value = value;
