@@ -16,7 +16,7 @@ public class Test_ProductStorage {
 			products[1].setName("Cigaro");
 			ProductStorage.save(ProductStorage.parse(products));
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		

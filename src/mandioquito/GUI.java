@@ -5,30 +5,37 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
 public class GUI {
+
+	GuiTableProduct productTable = new GuiTableProduct();
+	GuiFormProduct productForm = new GuiFormProduct();
+	ProductManager productManager = new ProductManager();
+	
 	public GUI() {
 		
 		JFrame frame = new JFrame();
         frame.setTitle("Gerenciador de Produtos");
 		frame.setLayout(new GridLayout(0, 2));
+		productManager = new ProductManager(ProductStorage.load());
 
-		GuiFormProduct productForm = new GuiFormProduct();
 		productForm.onSave(new GuiListener<Product>() {
 			public void action(Product product) {
 				System.out.println("Saved product "+product.getName()+" with "+product.getQtd()+" items of value "+product.getValue());
+				productManager.add(product);
+				productTable.setProducts(productManager.getProducts());
 			}
 		});
 		frame.add(productForm);
 		
-		GuiTableProduct productTable = new GuiTableProduct();
 		productTable.onClick(new GuiListener<Product>() {
 			public void action(Product product) {
 				productForm.setProduct(product);
 			};
 		});
 		frame.add(productTable);
+		productTable.setProducts(productManager.getProducts());
 		
 		frame.pack();
-        frame.setSize(640, 480);
+        frame.setSize(800, 480);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);

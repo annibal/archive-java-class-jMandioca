@@ -187,7 +187,7 @@ public class TerminalInterface {
 						products = ProductStorage.load();
 						productManager = new ProductManager(products);
 						log("Carregados "+products.length+" produtos");
-					} catch (IOException e) {
+					} catch (Exception e) {
 						log(" ( X ) Falha ao carregar os produtos:");
 						e.printStackTrace();
 					}
