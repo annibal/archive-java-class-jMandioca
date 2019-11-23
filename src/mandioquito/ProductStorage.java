@@ -12,7 +12,6 @@ public class ProductStorage {
 	static String filePath = "data/thing.csv";
 	
 	public static Product[] load() throws IOException {
-		System.out.println("Test File");
 		String row = "";
 		BufferedReader csvReader = null;
 		Stack<Product> stackProducts = new Stack<>();

@@ -56,20 +56,19 @@ public class TerminalInterface {
 	
 	Product updatedProduct(Product product) {
 		log("Atualizando produto "+product.getName());
-		log("(Insira um espaço para nao mudar \" \")");
 		
 		String name = "";
 		name = readString("  Nome ("+product.getName()+"): ");
-		if (name == "") { name = product.getName(); }
+//		if (name == "") { name = product.getName(); }
 		
 		float value = Float.NaN;
 		value = read("  Valor ("+product.getValue()+"): ");
-		if (value == Float.NaN) { value = product.getValue(); }
+//		if (value == Float.NaN) { value = product.getValue(); }
 		
 		float qtd = -1;
 		while(qtd < 0) {
 			qtd = read("  Quantidade ("+product.getQtd()+"): ");
-			if (qtd == -1) { qtd = product.getQtd(); }
+//			if (qtd == -1) { qtd = product.getQtd(); }
 			if (qtd < 0) { log("  ( X ) Quantidade deve ser 0 ou mais"); }
 		}
 		

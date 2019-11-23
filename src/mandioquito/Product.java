@@ -2,7 +2,7 @@ package mandioquito;
 
 import java.util.Random;
 
-public class Product {
+public class Product extends Object {
 	String id;
 	String name;
 	float value;
