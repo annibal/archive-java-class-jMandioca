@@ -1,42 +1,68 @@
 package mandioquito;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 public class GUI {
 
-	GuiTableProduct productTable = new GuiTableProduct();
-	GuiFormProduct productForm = new GuiFormProduct();
-	ProductManager productManager = new ProductManager();
+	Product[] allProducts = new Product[0];
+	JFrame frame = new JFrame();
+	GuiProductScreen productScreen = createProductScreen();
+	
+	GuiProductScreen createProductScreen() {
+		return new GuiProductScreen(allProducts, new GuiListener<Product[]>() {
+			public void action(Product[] products) {
+				allProducts = products;
+			}
+		});
+	}
 	
 	public GUI() {
 		
-		JFrame frame = new JFrame();
+		frame = new JFrame();
         frame.setTitle("Gerenciador de Produtos");
-		frame.setLayout(new GridLayout(0, 2));
-		productManager = new ProductManager(ProductStorage.load());
+        
+		JMenuBar menuBar = new JMenuBar();
+		
+		JMenu fileMenu = new JMenu("Arquivo");
+		JMenuItem saveItem = new JMenuItem("Salvar");
+		JMenuItem loadItem = new JMenuItem("Carregar");
+		fileMenu.add(saveItem);
+		fileMenu.add(loadItem);
+		menuBar.add(fileMenu);
 
-		productForm.onSave(new GuiListener<Product>() {
-			public void action(Product product) {
-				
-				if (productForm.isEditing()) {
-					productManager.update(product, product);
-				} else {
-					productManager.add(product);
-				}
-				productTable.setProducts(productManager.getProducts());
+		JMenu viewMenu = new JMenu("Tela");
+		JMenuItem dashItem = new JMenuItem("Dashboard");
+		JMenuItem produtosItem = new JMenuItem("Produtos");
+		viewMenu.add(dashItem);
+		viewMenu.add(produtosItem);
+		menuBar.add(viewMenu);
+		
+		loadItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.remove(productScreen);
+				allProducts = ProductStorage.load();
+				productScreen = createProductScreen();
+		        frame.add(productScreen);
+		        frame.revalidate(); 
 			}
 		});
-		frame.add(productForm);
-		
-		productTable.onClick(new GuiListener<Product>() {
-			public void action(Product product) {
-				productForm.setProduct(product);
-			};
+		saveItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProductStorage.save(allProducts);
+			}
 		});
-		frame.add(productTable);
-		productTable.setProducts(productManager.getProducts());
+		
+		frame.setJMenuBar(menuBar);
+		
+        frame.add(productScreen);
 		
 		frame.pack();
 //        frame.setSize(600, 480);
@@ -45,17 +71,4 @@ public class GUI {
         frame.setVisible(true);
 		
 	}
-	
-		
-	// start jframe
-	// load form
-		// button onclick returns new product
-		// has function to populate with product
-	// load table
-		// has function to put a list
-		// has onclick that returns a product
-	// load menu
-		// save receives a list of products
-		// load searches file system
-	// dashboard with charts
 }

@@ -14,15 +14,15 @@ public class ProductManager {
 	}
 	
 	public void add(Product product) {
-		System.out.println("Added "+product.getId());
+//		System.out.println("Added "+product.getId());
 		this.products.put(product.getId(), product);
 	}
 	public void remove(Product product) {
 		this.products.remove(product.getId());
 	}
 	public void update(Product oldProduct, Product newProduct) {
-		System.out.println(oldProduct.getId()+" | "+newProduct.getId());
-		System.out.println(oldProduct.getId().equals(newProduct.getId()));
+//		System.out.println(oldProduct.getId()+" | "+newProduct.getId());
+//		System.out.println(oldProduct.getId().equals(newProduct.getId()));
 		this.products.put(oldProduct.getId(), newProduct);
 	}
 	public Product[] getProducts() {
