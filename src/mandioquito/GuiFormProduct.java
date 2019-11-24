@@ -17,8 +17,10 @@ public class GuiFormProduct extends JPanel {
 	private JLabel qtdLabel = new JLabel("Qtd", SwingConstants.RIGHT);
 	private JButton clearButton = new JButton("Novo");
 	private JButton saveButton = new JButton("Salvar");
+	private JButton deleteButton = new JButton("Excluir");
 	private JLabel titleLabel = new JLabel("");
-	private GuiListener guiListener;
+	private GuiListener saveGuiListener;
+	private GuiListener deleteGuiListener;
 	private String productId = "";
 	
 	public GuiFormProduct() {
@@ -48,9 +50,11 @@ public class GuiFormProduct extends JPanel {
 		p.add(qtdContainer);
 
 		JPanel buttonsContainer = new JPanel();
-		buttonsContainer.setLayout(new GridLayout(0, 2, 6, 6));
+		buttonsContainer.setLayout(new GridLayout(0, 3, 6, 6));
+		buttonsContainer.add(this.deleteButton);
 		buttonsContainer.add(this.clearButton);
 		buttonsContainer.add(this.saveButton);
+		this.deleteButton.setEnabled(false);
 		p.add(buttonsContainer);
 
 		this.clearButton.addActionListener(new ActionListener() {
@@ -61,6 +65,11 @@ public class GuiFormProduct extends JPanel {
 		this.saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				save();
+			}
+		});
+		this.deleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				delete();
 			}
 		});
 		
@@ -76,6 +85,7 @@ public class GuiFormProduct extends JPanel {
 		this.qtdField.setText(product.getQtd()+"");
 		this.titleLabel.setText("Editando produto "+product.getName());
 		this.productId = product.getId();
+		this.deleteButton.setEnabled(true);
 	}
 	public void clear() {
 		this.nameField.setText("");
@@ -83,16 +93,26 @@ public class GuiFormProduct extends JPanel {
 		this.qtdField.setText("");
 		this.titleLabel.setText("Novo produto");
 		this.productId = "";
+		this.deleteButton.setEnabled(false);
 	}
 	public void onSave(GuiListener guiListener) {
-		this.guiListener = guiListener;
+		this.saveGuiListener = guiListener;
+	}
+	public void onDelete(GuiListener guiListener) {
+		this.deleteGuiListener = guiListener;
 	}
 	public void save() {
 		try {
-			this.guiListener.action(this.getProduct());	
+			this.saveGuiListener.action(this.getProduct());	
 			this.clear();
 		} catch(ProductPropertyParseError e) {
 			this.titleLabel.setText( e.getMessage() );
+		}
+	}
+	public void delete() {
+		if (this.isEditing()) {
+			this.deleteGuiListener.action(this.productId);
+			this.clear();
 		}
 	}
 

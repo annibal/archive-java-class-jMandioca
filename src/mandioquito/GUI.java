@@ -3,8 +3,10 @@ package mandioquito;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -48,6 +50,7 @@ public class GUI {
 		loadItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.remove(productScreen);
+				ProductStorage.filePath = getCaminhoArquivo(false);
 				allProducts = ProductStorage.load();
 				productScreen = createProductScreen();
 		        frame.add(productScreen);
@@ -56,6 +59,7 @@ public class GUI {
 		});
 		saveItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ProductStorage.filePath = getCaminhoArquivo(true);
 				ProductStorage.save(allProducts);
 			}
 		});
@@ -70,5 +74,26 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 		
+	}
+	
+	public String getCaminhoArquivo(boolean abrir) {
+		String txtCaminho = "";
+		File diretorioOrigem = new File("C:\\");
+		JFileChooser telaEscolhe = new JFileChooser(diretorioOrigem);
+//		telaEscolhe.setFileFilter(new FiltroExtensao("csv"));
+		telaEscolhe.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+		int ret;
+		if (abrir) {
+			ret = telaEscolhe.showSaveDialog(frame);
+		} else {
+			ret = telaEscolhe.showOpenDialog(frame);
+		}
+
+		if (ret == JFileChooser.APPROVE_OPTION) {
+			File fileArquivo = telaEscolhe.getSelectedFile();
+			txtCaminho = fileArquivo.getAbsolutePath();
+		}
+		return txtCaminho;
 	}
 }

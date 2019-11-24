@@ -29,6 +29,13 @@ public class GuiProductScreen extends JPanel {
 				updateProductsListener.action(products);
 			}
 		});
+		productForm.onDelete(new GuiListener<String>() {
+			public void action(String productId) {
+				productManager.remove(productId);
+				productTable.setProducts(products);
+				updateProductsListener.action(products);
+			}
+		});
 		this.add(productForm);
 		
 		productTable.onClick(new GuiListener<Product>() {

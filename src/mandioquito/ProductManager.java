@@ -18,7 +18,10 @@ public class ProductManager {
 		this.products.put(product.getId(), product);
 	}
 	public void remove(Product product) {
-		this.products.remove(product.getId());
+		this.remove(product.getId());
+	}
+	public void remove(String id) {
+		this.products.remove(id);
 	}
 	public void update(Product oldProduct, Product newProduct) {
 //		System.out.println(oldProduct.getId()+" | "+newProduct.getId());
