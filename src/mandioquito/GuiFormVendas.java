@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -21,10 +22,16 @@ public class GuiFormVendas extends JPanel {
 	JCheckBox[] checkboxes;
 	JButton sellButton = new JButton("Vender");
 	GuiNumero numberSpin = new GuiNumero(0, 10);
+	JComboBox categoryComboBox = new JComboBox(Product.TYPES.values());
+	JLabel categoryTitle = new JLabel("Categoria", SwingConstants.RIGHT);
+	Product.TYPES selectedCategory = Product.TYPES.PRODUTO;
 	
 	void updateCheckboxPanel() {
 		checkboxPanel.removeAll();
 		Product[] products = productManager.getProducts();
+		
+		checkboxPanel.add(categoryTitle);
+		checkboxPanel.add(categoryComboBox);
 		
 		boolean[] previouslyChecked = new boolean[checkboxes.length];
 		for (int i=0; i<previouslyChecked.length; i++) {
@@ -43,7 +50,9 @@ public class GuiFormVendas extends JPanel {
 				checkboxes[i].setEnabled(false);
 				checkboxes[i].setSelected(false);
 			}
-			checkboxPanel.add(checkboxes[i]);
+			if (products[i].getType() == this.selectedCategory) {
+				checkboxPanel.add(checkboxes[i]);
+			}
 		}
 		
 		checkboxPanel.revalidate();
@@ -81,6 +90,7 @@ public class GuiFormVendas extends JPanel {
 					if (checkboxes[i].isSelected()) {
 						productManager.update(products[i], new Product(
 							products[i].getName(),
+							products[i].getType(),
 							products[i].getValue(),
 							products[i].getQtd() - qtd,
 							products[i].getId()
@@ -92,6 +102,13 @@ public class GuiFormVendas extends JPanel {
 				numberSpin.setValue(0);
 				
 				updateProductsListener.action(productManager.getProducts());
+			}
+		});
+		
+		categoryComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selectedCategory = Product.parseType(categoryComboBox.getSelectedItem().toString());
+				updateCheckboxPanel();
 			}
 		});
 		

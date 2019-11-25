@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 public class GuiTableProduct extends JPanel {
 	
 	GuiListener<Product> guiListener;
-	String [] colunas = {"Nome", "Valor", "Quantidade"};
+	String [] colunas = {"Nome", "Valor", "Quantidade", "Tipo"};
 	Product[] products = {};
 	
 	public GuiTableProduct() {
@@ -31,6 +31,7 @@ public class GuiTableProduct extends JPanel {
 			dados[i][0] = this.products[i].getName();
 			dados[i][1] = this.products[i].getValue()+"";
 			dados[i][2] = this.products[i].getQtd()+"";
+			dados[i][3] = Product.typeToString(this.products[i].getType());
 		}
 		
 		JTable tabela = new JTable();

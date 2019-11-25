@@ -12,9 +12,11 @@ public class GuiFormProduct extends JPanel {
 	private JTextField nameField = new JTextField();
 	private JTextField valueField = new JTextField();
 	private JTextField qtdField = new JTextField();
+	private JComboBox categoryComboBox = new JComboBox(Product.TYPES.values());
 	private JLabel nameLabel = new JLabel("Nome", SwingConstants.RIGHT);
 	private JLabel valueLabel = new JLabel("Valor", SwingConstants.RIGHT);
 	private JLabel qtdLabel = new JLabel("Qtd", SwingConstants.RIGHT);
+	private JLabel categoryLabel = new JLabel("Categoria", SwingConstants.RIGHT);
 	private JButton clearButton = new JButton("Novo");
 	private JButton saveButton = new JButton("Salvar");
 	private JButton deleteButton = new JButton("Excluir");
@@ -48,6 +50,12 @@ public class GuiFormProduct extends JPanel {
 		qtdContainer.add(this.qtdLabel);
 		qtdContainer.add(this.qtdField);
 		p.add(qtdContainer);
+		
+		JPanel categoryContainer = new JPanel();
+		categoryContainer.setLayout(new GridLayout(0, 2, 6, 6));
+		categoryContainer.add(this.categoryLabel);
+		categoryContainer.add(this.categoryComboBox);
+		p.add(categoryContainer);
 
 		JPanel buttonsContainer = new JPanel();
 		buttonsContainer.setLayout(new GridLayout(0, 3, 6, 6));
@@ -81,6 +89,7 @@ public class GuiFormProduct extends JPanel {
 	}
 	public void setProduct(Product product) {
 		this.nameField.setText(product.getName());
+		this.categoryComboBox.setSelectedItem(product.getType());
 		this.valueField.setText(product.getValue()+"");
 		this.qtdField.setText(product.getQtd()+"");
 		this.titleLabel.setText("Editando produto "+product.getName());
@@ -89,6 +98,7 @@ public class GuiFormProduct extends JPanel {
 	}
 	public void clear() {
 		this.nameField.setText("");
+		this.categoryComboBox.setSelectedItem(Product.TYPES.PRODUTO);
 		this.valueField.setText("");
 		this.qtdField.setText("");
 		this.titleLabel.setText("Novo produto");
@@ -119,6 +129,7 @@ public class GuiFormProduct extends JPanel {
 	public Product getProduct() throws ProductPropertyParseError {
 		float value, qtd;
 		String name;
+		Product.TYPES type;
 		
 		name = this.nameField.getText();
 		if (name.isEmpty()) { throw new ProductPropertyParseError("Nome é necessário"); }
@@ -135,10 +146,13 @@ public class GuiFormProduct extends JPanel {
 			throw new ProductPropertyParseError("Quantidade deve ser um número válido");
 		}
 		
+		System.out.println(this.categoryComboBox.getSelectedItem());
+		type = Product.parseType( this.categoryComboBox.getSelectedItem().toString() );
+		
 		if (this.isEditing()) {
-			return new Product(name, value, qtd, this.productId);
+			return new Product(name, type, value, qtd, this.productId);
 		} else {
-			return new Product(name, value, qtd);
+			return new Product(name, type, value, qtd);
 		}
 	}
 	

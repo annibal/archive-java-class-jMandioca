@@ -25,6 +25,7 @@ public class TerminalInterface {
 	
 	void logProduct(Product product) {
 		log("  Nome: "+product.getName());
+		log("  Tipo: "+Product.typeToString(product.getType()));
 		log("  Valor: "+product.getValue());
 		log("  Quantidade: "+product.getQtd());
 	}
@@ -45,13 +46,15 @@ public class TerminalInterface {
 		float value = 0;
 		value = read("  Valor: ");
 		
+		String tipo = readString("  Tipo: ");
+		
 		float qtd = -1;
 		while (qtd < 0) {
 			qtd = read("  Quantidade: ");
 			if (qtd < 0) { log("  ( X ) Quantidade deve ser 0 ou mais"); }
 		}
 		
-		return new Product(name, value, qtd);
+		return new Product(name, Product.parseType(tipo), value, qtd);
 	}
 	
 	Product updatedProduct(Product product) {
@@ -65,6 +68,8 @@ public class TerminalInterface {
 		value = read("  Valor ("+product.getValue()+"): ");
 //		if (value == Float.NaN) { value = product.getValue(); }
 		
+		String tipo = readString("  Tipo ("+Product.typeToString(product.getType())+"): ");
+		
 		float qtd = -1;
 		while(qtd < 0) {
 			qtd = read("  Quantidade ("+product.getQtd()+"): ");
@@ -72,7 +77,7 @@ public class TerminalInterface {
 			if (qtd < 0) { log("  ( X ) Quantidade deve ser 0 ou mais"); }
 		}
 		
-		return new Product(name, value, qtd);
+		return new Product(name, Product.parseType(tipo), value, qtd);
 	}
 	
 	void logMenu() {
