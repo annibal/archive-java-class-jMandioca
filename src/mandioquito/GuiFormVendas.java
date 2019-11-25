@@ -20,8 +20,7 @@ public class GuiFormVendas extends JPanel {
 	JLabel titleLabel = new JLabel("Vendas");
 	JCheckBox[] checkboxes;
 	JButton sellButton = new JButton("Vender");
-	JTextField qtdField = new JTextField();
-	JLabel qtdLabel = new JLabel("Quantidade", SwingConstants.RIGHT);
+	GuiNumero numberSpin = new GuiNumero(0, 10);
 	
 	void updateCheckboxPanel() {
 		checkboxPanel.removeAll();
@@ -63,11 +62,8 @@ public class GuiFormVendas extends JPanel {
 		formPanel.add(titleLabel);
 		formPanel.add(sellButton);
 		
-		JPanel qtdPanel = new JPanel();
-		qtdPanel.setLayout(new GridLayout(0,2,10,10));
-		qtdPanel.add(qtdLabel);
-		qtdPanel.add(qtdField);
-		formPanel.add(qtdPanel);
+		formPanel.add(numberSpin);
+		numberSpin.setValue(0);
 
 		checkboxPanel.setLayout(new GridLayout(0,2,10,10));
 		this.add(checkboxPanel);
@@ -79,7 +75,7 @@ public class GuiFormVendas extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				Product[] products = productManager.getProducts();
-				float qtd = Float.parseFloat(qtdField.getText());
+				float qtd = (float) numberSpin.getValue();
 				
 				for (int i=0; i<checkboxes.length; i++) {
 					if (checkboxes[i].isSelected()) {
@@ -93,6 +89,7 @@ public class GuiFormVendas extends JPanel {
 				}
 				
 				updateCheckboxPanel();
+				numberSpin.setValue(0);
 				
 				updateProductsListener.action(productManager.getProducts());
 			}
