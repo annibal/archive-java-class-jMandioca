@@ -44,6 +44,8 @@ public class GuiProductScreen extends JPanel {
 				// usuario removeu um produto
 				// remove da lista de produtos
 				productManager.remove(productId);
+				
+				Product[] products = productManager.getProducts();
 				// manda a tabela atualizar, agora sem o produto removido
 				productTable.setProducts(products);
 				// avisa o GUI que os produtos mudaram

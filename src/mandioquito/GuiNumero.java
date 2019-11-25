@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,7 +16,7 @@ import javax.swing.JPanel;
 public class GuiNumero extends JPanel {
 	
 	// funcao que cria uma imagem 30px x 30px
-	Canvas getImage(String path) {
+	Canvas getImage(URL path) {
 		Canvas c = new Canvas() {
 			public void paint(Graphics g) {
 		        Toolkit t=Toolkit.getDefaultToolkit();  
@@ -28,10 +29,10 @@ public class GuiNumero extends JPanel {
 	}
 
 	// botoes de mais e menos
-	Canvas lessButton = getImage("Images/flat-minus.png");
-	Canvas moreButton = getImage("Images/flat-plus.png");
-	Canvas lessButtonDisabled = getImage("Images/flat-minus-gray.png");
-	Canvas moreButtonDisabled = getImage("Images/flat-plus-gray.png");
+	Canvas lessButton = getImage(Main.class.getResource("/flat-minus.png"));
+	Canvas moreButton = getImage(Main.class.getResource("/flat-plus.png"));
+	Canvas lessButtonDisabled = getImage(Main.class.getResource("/flat-minus-gray.png"));
+	Canvas moreButtonDisabled = getImage(Main.class.getResource("/flat-plus-gray.png"));
 	JLabel numberLabel = new JLabel("0");
 	int number = 0;
 	int min = 0;
