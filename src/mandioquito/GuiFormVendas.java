@@ -13,6 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+// Esta é a tela de vendas
+// permite escolher quais produtos esta vendendo
+// e quantos esta vendendo
+// ela atualiza o produto alterando sua quantidade
 public class GuiFormVendas extends JPanel {
 	
 	GuiListener<Product[]> updateProductsListener;
@@ -26,13 +30,18 @@ public class GuiFormVendas extends JPanel {
 	JLabel categoryTitle = new JLabel("Categoria", SwingConstants.RIGHT);
 	Product.TYPES selectedCategory = Product.TYPES.PRODUTO;
 	
+	// separada a logica de criar os checkboxes para ser chamado sempre que algum produto for vendido
+	// ou quando filtrar por tipo de produto
 	void updateCheckboxPanel() {
+		// remove todos os items primeiro
 		checkboxPanel.removeAll();
 		Product[] products = productManager.getProducts();
 		
+		// insere o filtro
 		checkboxPanel.add(categoryTitle);
 		checkboxPanel.add(categoryComboBox);
 		
+		// verifica quais checkboxes estavam selecionados
 		boolean[] previouslyChecked = new boolean[checkboxes.length];
 		for (int i=0; i<previouslyChecked.length; i++) {
 			if (checkboxes[i] != null) {
@@ -42,14 +51,18 @@ public class GuiFormVendas extends JPanel {
 			}
 		}
 
+		// recria os checkboxes de acordo com os produtos
 		checkboxes = new JCheckBox[products.length];
 		for (int i=0; i<products.length; i++) {
 			checkboxes[i] = new JCheckBox(products[i].getName() + " ("+ products[i].getQtd() +")");
+			// se estava selecionado, continua
 			if (previouslyChecked[i]) { checkboxes[i].setSelected(true); }
+			// se tem menos de um, des-seleciona e deixa cinzinha, inclicavel
 			if (products[i].getQtd() < 1) {
 				checkboxes[i].setEnabled(false);
 				checkboxes[i].setSelected(false);
 			}
+			// se for do tipo que to filtrando, mostra
 			if (products[i].getType() == this.selectedCategory) {
 				checkboxPanel.add(checkboxes[i]);
 			}
@@ -80,14 +93,17 @@ public class GuiFormVendas extends JPanel {
 		
 		this.add(formPanel);
 		
+		// acao de clicar em vender
 		sellButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				Product[] products = productManager.getProducts();
 				float qtd = (float) numberSpin.getValue();
 				
+				// pega todos os produtos selecionados
 				for (int i=0; i<checkboxes.length; i++) {
 					if (checkboxes[i].isSelected()) {
+						// atualiza com a quantidade reduzida
 						productManager.update(products[i], new Product(
 							products[i].getName(),
 							products[i].getType(),
@@ -98,6 +114,7 @@ public class GuiFormVendas extends JPanel {
 					}
 				}
 				
+				// atualiza os checkboxes para mostrar a nova qtd
 				updateCheckboxPanel();
 				numberSpin.setValue(0);
 				
@@ -105,6 +122,7 @@ public class GuiFormVendas extends JPanel {
 			}
 		});
 		
+		// acao de trocar o filtro
 		categoryComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedCategory = Product.parseType(categoryComboBox.getSelectedItem().toString());

@@ -2,6 +2,8 @@ package mandioquito;
 import java.io.IOException;
 import java.util.Scanner;
 
+// interface que lista, edita, adiciona, remove, salva e carrega, mas sem JFrame
+// para testes
 public class TerminalInterface {
 	Scanner c = new Scanner(System.in);
 	enum MENU_OPTIONS {

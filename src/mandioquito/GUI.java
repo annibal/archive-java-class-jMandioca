@@ -14,6 +14,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+// GUI é a classe principal, que gerencia a janela, o menu, e qual "tela" esta sendo exibida
+// GUI significa Graphics User Interface, ou Interface Gráfica do Usuário
 public class GUI {
 
 	Product[] allProducts = new Product[0];
@@ -23,6 +25,7 @@ public class GUI {
 	GuiDashboardScreen dashboardScreen = createDashboardScreen();
 	GuiFormVendas vendasScreen = createVendasScreen();
 	
+	// essas funçoes inicializam as outras classes de GUI
 	GuiProductScreen createProductScreen() {
 		return new GuiProductScreen(allProducts, new GuiListener<Product[]>() {
 			public void action(Product[] products) {
@@ -41,11 +44,14 @@ public class GUI {
 		});
 	}
 	
+	// Component significa qqr coisa visual do JFrame, tipo JPanels e afins
+	// essa função troca o conteudo da tela para outro Componente
 	void setContents(Component screen) {
 		frame.remove(contents);
 		contents = new JPanel();
 		contents.add(screen);
         frame.add(contents);
+        // essa função diz pro jframe renderizar de novo
         frame.revalidate(); 
 	}
 	
@@ -56,6 +62,8 @@ public class GUI {
 		frame.add(contents);
         frame.setTitle("Gerenciador de Produtos");
         
+        // criação do menu
+        
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("Arquivo");
@@ -65,6 +73,7 @@ public class GUI {
 		fileMenu.add(loadItem);
 		menuBar.add(fileMenu);
 		
+		// ActionListeners para os itens do menu "Arquivo"
 		loadItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProductStorage.filePath = getCaminhoArquivo(false);
@@ -84,11 +93,13 @@ public class GUI {
 		JMenuItem dashItem = new JMenuItem("Dashboard");
 		JMenuItem produtosItem = new JMenuItem("Produtos");
 		JMenuItem vendasItem = new JMenuItem("Vendas");
-		viewMenu.add(dashItem);
+//		viewMenu.add(dashItem); // nao tem grafico ainda
 		viewMenu.add(produtosItem);
 		viewMenu.add(vendasItem);
 		menuBar.add(viewMenu);
 
+		
+		// Os itens do menu de tela chamam setContents() pra trocar de tela
 		dashItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dashboardScreen = createDashboardScreen();
@@ -110,6 +121,7 @@ public class GUI {
 		
 		frame.setJMenuBar(menuBar);
 		
+		// a tela default é a de cadastro de produtos
         contents.add(productScreen);
 		
 		frame.pack();
@@ -120,6 +132,7 @@ public class GUI {
 		
 	}
 	
+	// funcao que abre o explorador de arquivos pra salvar/carregar os dados
 	public String getCaminhoArquivo(boolean abrir) {
 		String txtCaminho = "";
 		JFileChooser telaEscolhe = new JFileChooser(new File(System.getProperty("user.home")));

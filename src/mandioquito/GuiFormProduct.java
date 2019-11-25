@@ -8,6 +8,9 @@ import javax.swing.*;
 
 import com.sun.javafx.binding.StringConstant;
 
+// Esse cara contém os campos para editar e criar um produto
+// Ele sabe se esta editando
+// E se pode excluir
 public class GuiFormProduct extends JPanel {
 	private JTextField nameField = new JTextField();
 	private JTextField valueField = new JTextField();
@@ -26,6 +29,7 @@ public class GuiFormProduct extends JPanel {
 	private String productId = "";
 	
 	public GuiFormProduct() {
+		// cria um formulario em JPanel
 		super();
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(0, 1, 6, 6));
@@ -33,6 +37,7 @@ public class GuiFormProduct extends JPanel {
 
 		p.add(titleLabel);
 		
+		// Coloca os campos em pares (label / textField)
 		JPanel nameContainer = new JPanel();
 		nameContainer.setLayout(new GridLayout(0, 2, 6, 6));
 		nameContainer.add(this.nameLabel);
@@ -57,6 +62,7 @@ public class GuiFormProduct extends JPanel {
 		categoryContainer.add(this.categoryComboBox);
 		p.add(categoryContainer);
 
+		// Coloca os botoes
 		JPanel buttonsContainer = new JPanel();
 		buttonsContainer.setLayout(new GridLayout(0, 3, 6, 6));
 		buttonsContainer.add(this.deleteButton);
@@ -65,6 +71,7 @@ public class GuiFormProduct extends JPanel {
 		this.deleteButton.setEnabled(false);
 		p.add(buttonsContainer);
 
+		// Atribui os callbacks
 		this.clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				clear();
@@ -84,9 +91,12 @@ public class GuiFormProduct extends JPanel {
 		this.add(p);
 	}
 	
+	// getter de estado de edição pro GUI saber o que está acontecendo
 	public boolean isEditing() {
 		return !this.productId.isEmpty();
 	}
+	
+	// Recebe um produto de cima e joga seus valores nos lugares certos
 	public void setProduct(Product product) {
 		this.nameField.setText(product.getName());
 		this.categoryComboBox.setSelectedItem(product.getType());
@@ -96,6 +106,8 @@ public class GuiFormProduct extends JPanel {
 		this.productId = product.getId();
 		this.deleteButton.setEnabled(true);
 	}
+	
+	// Limpa os valores dos campos
 	public void clear() {
 		this.nameField.setText("");
 		this.categoryComboBox.setSelectedItem(Product.TYPES.PRODUTO);
@@ -105,12 +117,15 @@ public class GuiFormProduct extends JPanel {
 		this.productId = "";
 		this.deleteButton.setEnabled(false);
 	}
+	
+	// onSave e onDelete sao equivalentes de addActionListener, mas so permitem um listener
 	public void onSave(GuiListener guiListener) {
 		this.saveGuiListener = guiListener;
 	}
 	public void onDelete(GuiListener guiListener) {
 		this.deleteGuiListener = guiListener;
 	}
+	// funcoes que chamam os listeners - fazem acontecer o evento
 	public void save() {
 		try {
 			this.saveGuiListener.action(this.getProduct());	
@@ -126,6 +141,8 @@ public class GuiFormProduct extends JPanel {
 		}
 	}
 
+	// Funcao que processa todos os valores de cada campo e junta em um objeto Product
+	// pode dar errado, tipo usuario digitar "batata" no campo valor
 	public Product getProduct() throws ProductPropertyParseError {
 		float value, qtd;
 		String name;
@@ -150,6 +167,7 @@ public class GuiFormProduct extends JPanel {
 		type = Product.parseType( this.categoryComboBox.getSelectedItem().toString() );
 		
 		if (this.isEditing()) {
+			// se esta editando, passa o mesmo id do produto
 			return new Product(name, type, value, qtd, this.productId);
 		} else {
 			return new Product(name, type, value, qtd);

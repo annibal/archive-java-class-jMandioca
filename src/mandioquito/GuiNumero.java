@@ -11,8 +11,10 @@ import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+// esse é o componente com (-) e (+) para selecionar quantidade de produtos a serem vendidos
 public class GuiNumero extends JPanel {
 	
+	// funcao que cria uma imagem 30px x 30px
 	Canvas getImage(String path) {
 		Canvas c = new Canvas() {
 			public void paint(Graphics g) {
@@ -25,6 +27,7 @@ public class GuiNumero extends JPanel {
 		return c;
 	}
 
+	// botoes de mais e menos
 	Canvas lessButton = getImage("Images/flat-minus.png");
 	Canvas moreButton = getImage("Images/flat-plus.png");
 	Canvas lessButtonDisabled = getImage("Images/flat-minus-gray.png");
@@ -41,10 +44,12 @@ public class GuiNumero extends JPanel {
 		
 		this.setLayout(new GridLayout(0,3, 10,10));
 		
+		// acao de clique no mais
 		moreButton.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				setValue(number + 1);
 			}
+			// como é uma interface, é necessario declarar esses métodos
 			public void mouseEntered(MouseEvent e) { }
 			public void mouseExited(MouseEvent e) { }
 			public void mousePressed(MouseEvent e) { }
