@@ -1,6 +1,12 @@
 package mandioquito;
 
-public class GuiDashboardScreen {
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+public class GuiDashboardScreen extends JPanel {
 	
+	public GuiDashboardScreen(Product[] products) {
+		JLabel label = new JLabel("Dashboard");
+		this.add(label);
+	}
 }

@@ -26,7 +26,6 @@ public class GuiTableProduct extends JPanel {
 		
 		this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
-		System.out.println(this.products.length+" - "+this.colunas.length);
 		String[][] dados = new String[this.products.length][this.colunas.length];
 		for (int i=0; i<this.products.length; i++) {
 			dados[i][0] = this.products[i].getName();
